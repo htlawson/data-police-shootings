@@ -12,4 +12,57 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Harper Lawson
 
-### Article: "[**Nearly 250 women have been fatally shot by police since 2015**](https://www.washingtonpost.com/graphics/2020/investigations/police-shootings-women/)**" by The Washington Post**
+### Background
+
+I am examining the 2020 Washington Post story, “[Nearly 250 women have been fatally shot by police since 2015](https://www.washingtonpost.com/graphics/2020/investigations/police-shootings-women/)” by Marisa Iati, Jennifer Jenkins and Sommer Brugal.
+
+An interactive database on the subject can be found [here](https://www.washingtonpost.com/graphics/investigations/police-shootings-database/).
+
+This piece uses the murder of Breonna Taylor as a catalyst in diving into the much larger issue of police using excessive force disproportionally and unnecessarily against certain communities and demographics.
+
+### Key Findings
+
+#### These are direct quotes from the article.
+
+"Since 2015, Black women have accounted for less than 1 percent of the overall fatal shootings in cases where race was known. But within this small subset, Black women, who are 13 percent of the female population, account for 20 percent of the women shot and killed and 28 percent of the unarmed deaths."
+
+"Crenshaw said Black women’s deaths also may be dismissed as 'collateral damage' if they are killed while police are pursuing someone else. Twenty of the 247 women were killed in that kind of situation, analysis shows. In 12 of those 20 shootings, police said the women killed were caught in crossfire or shot accidentally."
+
+"Since 2015, police have killed 26 unarmed women, including Taylor. Of those, 14 were White, seven were Black, four were Hispanic and one’s race was unknown. While about twice as many White women were shot and killed as Black women, White women account for five times the Black female population."
+
+["Of the 89 women killed at residences where they lived or often stayed, 12 encounters began as did Taylor’s — with a warrant to conduct a search or make an arrest in an investigation."
+
+"In two killings, police said they shot the woman by accident. In most of those cases, the women were armed or reaching for a weapon, police said."]
+
+"About 31 percent, or 77, of the 247 women fatally shot by police since 2015 had mental health issues, compared to 22 percent of the 5,362 men killed."
+
+### Process
+
+To load the necessary packages:
+
+```{r}
+
+library (tidyverse)
+library (rmarkdown)
+library (janitor)
+library (ggplot2)
+library (dplyr)
+library (leaflet)
+library (sf)
+
+# Assuming these packages are already installed.
+# Assuming base, datasets, forcats, graphics, purrr, readr, and stats are already installed and loaded.
+
+```
+
+To load the necessary data:
+
+```{r}
+
+shootings_data_1 <- read_csv("v1/fatal-police-shootings-data.csv")
+shootings_data_2 <- read_csv("v2/fatal-police-shootings-data.csv")
+shootings_agencies <- read_csv("v2/fatal-police-shootings-agencies.csv")
+
+```
+
+#### Finding 1
