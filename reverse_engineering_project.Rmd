@@ -1,0 +1,15 @@
+---
+title: "reverse_engineering_project"
+output: html_document
+date: "2024-04-02"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Reverse Engineering Project
+
+## Harper Lawson
+
+### Article: "[**Nearly 250 women have been fatally shot by police since 2015**](https://www.washingtonpost.com/graphics/2020/investigations/police-shootings-women/)**" by The Washington Post**
