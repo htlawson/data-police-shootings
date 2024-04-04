@@ -10,27 +10,23 @@ The [FBI](https://www.fbi.gov/services/cjis/ucr/use-of-force) and the Centers fo
 
 The Post seeks to make records as comprehensive as possible; the database is updated regularly as fatal shootings are reported and as facts emerge about individual cases. At times, there may be a lag between the date of the shooting and its inclusion in the database because of delays in reporting and data verification.
 
-To provide information about fatal police shootings since Jan. 1, 2015, send us an email at policeshootingsfeedback@washpost.com.
+To provide information about fatal police shootings since Jan. 1, 2015, send us an email at [policeshootingsfeedback\@washpost.com](mailto:policeshootingsfeedback@washpost.com){.email}.
 
 [Explore the interactive database](https://www.washingtonpost.com/graphics/investigations/police-shootings-database/)
 
-
 ## Data Versions
 
-- **[Version 2](v2/)**:
-    - Version 2 includes changes to improve the data schema, increase transparency around research methodology, and add data on law enforcement agencies.
-    - Documentation and data formatted in the v2 data stucture can be found in [/v2](v2/).
-    - Details on the changes between v1 and v2 can be found in [v2/README.md](v2/README.md).
-
-- **[Version 1]((v2/))**:
-    - Data formatted in the v1 data structure can be found in [/v1](v1/).
+-   [**Version 2**](v2/):
+    -   Version 2 includes changes to improve the data schema, increase transparency around research methodology, and add data on law enforcement agencies.
+    -   Documentation and data formatted in the v2 data stucture can be found in [/v2](v2/).
+    -   Details on the changes between v1 and v2 can be found in [v2/README.md](v2/README.md).
+-   [**Version 1**]((v2/)):
+    -   Data formatted in the v1 data structure can be found in [/v1](v1/).
 
 **Note:**
 
-- As of the official v2 release, the data files in [/v2](v2/) include all records since 2015; historic records have been transformed into the new data schema.
-- The [/v1](v1/) data is static as of the migration to v2; the data is no longer updated. Only the [/v2](v2/) datasets are updated.
-
-
+-   As of the official v2 release, the data files in [/v2](v2/) include all records since 2015; historic records have been transformed into the new data schema.
+-   The [/v1](v1/) data is static as of the migration to v2; the data is no longer updated. Only the [/v2](v2/) datasets are updated.
 
 ## Contact & Contributing
 
@@ -38,15 +34,13 @@ We welcome assistance in making the our data as complete and accurate as possibl
 
 Please reach out with any questions about the data, feedback, updated information or corrections. Before you do, take a moment to review the [Code of Conduct](CODE_OF_CONDUCT.md).
 
-The best way to contribute to the data, make suggestions or provide information about fatal police shootings since Jan. 1, 2015, is to send us an email at policeshootingsfeedback@washpost.com.
+The best way to contribute to the data, make suggestions or provide information about fatal police shootings since Jan. 1, 2015, is to send us an email at [policeshootingsfeedback\@washpost.com](mailto:policeshootingsfeedback@washpost.com){.email}.
 
 Please note that we do not accept pull requests as the data file is automatically generated from our internal database.
-
 
 ## Licensing
 
 The data is published under an Attribution-NonCommercial-ShareAlike 4.0 International CC BY-NC-SA 4.0 license.
-
 
 ## Credits
 

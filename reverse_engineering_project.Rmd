@@ -63,16 +63,12 @@ library (sf)
 
 ```
 
-To load and join the necessary data:
+To load the necessary data:
 
 ```{r}
 
-shootings_data_1 <- read_csv("v1/fatal-police-shootings-data.csv")
 shootings_data_2 <- read_csv("v2/fatal-police-shootings-data.csv")
 shootings_agencies <- read_csv("v2/fatal-police-shootings-agencies.csv")
-
-joined_shooting_data <- shootings_data_1 %>%
-  full_join(shootings_data_2, by= c("id"))
 
 ```
 
