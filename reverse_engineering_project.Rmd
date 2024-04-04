@@ -63,13 +63,16 @@ library (sf)
 
 ```
 
-To load the necessary data:
+To load and join the necessary data:
 
 ```{r}
 
 shootings_data_1 <- read_csv("v1/fatal-police-shootings-data.csv")
 shootings_data_2 <- read_csv("v2/fatal-police-shootings-data.csv")
 shootings_agencies <- read_csv("v2/fatal-police-shootings-agencies.csv")
+
+joined_shooting_data <- shootings_data_1 %>%
+  full_join(shootings_data_2, by= c("id"))
 
 ```
 
@@ -78,13 +81,6 @@ shootings_agencies <- read_csv("v2/fatal-police-shootings-agencies.csv")
 #### "Since 2015, Black women have accounted for less than 1 percent of the overall fatal shootings in cases where race was known. But within this small subset, Black women, who are 13 percent of the female population, account for 20 percent of the women shot and killed and 28 percent of the unarmed deaths."
 
 Join the two data sets:
-
-```{r}
-
-joined_shooting_data <- shootings_data_1 %>%
-  inner_join(shootings_data_2, by="id")
-
-```
 
 Filtering the data and obtaining values:
 
