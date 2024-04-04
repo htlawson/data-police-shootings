@@ -76,8 +76,6 @@ shootings_agencies <- read_csv("v2/fatal-police-shootings-agencies.csv")
 
 #### "Since 2015, Black women have accounted for less than 1 percent of the overall fatal shootings in cases where race was known. But within this small subset, Black women, who are 13 percent of the female population, account for 20 percent of the women shot and killed and 28 percent of the unarmed deaths."
 
-Join the two data sets:
-
 Filtering the data and obtaining values:
 
 ```{r}
@@ -128,9 +126,66 @@ percentage_black_women_of_all_women <- total_black_women_shot_and_killed / total
 
 # Percentage unarmed Black women out of all unarmed deaths
 percentage_black_women_unarmed_deaths <- total_unarmed_black_women_shot_and_killed / total_unarmed_women_shot_and_killed * 100
+    # *** WRONG
 
 cat("Percentage of Black women of all women shot and killed:", percentage_black_women_of_all_women, "%\n")
 
-cat("Percentage unarmed Black women out of all unarmed deaths:", percentage_black_women_unarmed_deaths, "%\n")
+cat("Percentage unarmed Black women shot and killed out of all unarmed deaths:", percentage_black_women_unarmed_deaths, "%\n")
+    # *** WRONG
+
+```
+
+### Finding 2
+
+#### "Crenshaw said Black women’s deaths also may be dismissed as 'collateral damage' if they are killed while police are pursuing someone else. Twenty of the 247 women were killed in that kind of situation, analysis shows. In 12 of those 20 shootings, police said the women killed were caught in crossfire or shot accidentally."
+
+Obtaining values:
+
+```{r}
+
+# Total number of accidental deaths
+total_accidental_deaths <- nrow(subset(fatal_shootings_known_race, threat_type == "accident" & gender == "female"))
+
+total_accidental_deaths
+
+```
+
+### Finding 3
+
+#### "Since 2015, police have killed 26 unarmed women, including Taylor. Of those, 14 were White, seven were Black, four were Hispanic and one’s race was unknown. While about twice as many White women were shot and killed as Black women, White women account for five times the Black female population."
+
+Obtaining values:
+
+```{r}
+
+# Total number of all unarmed women shot and killed
+
+total_unarmed_women_shot_and_killed
+
+```
+
+### Finding 4
+
+#### ["Of the 89 women killed at residences where they lived or often stayed, 12 encounters began as did Taylor’s — with a warrant to conduct a search or make an arrest in an investigation."
+
+#### "In two killings, police said they shot the woman by accident. In most of those cases, the women were armed or reaching for a weapon, police said."]
+
+Obtaining values:
+
+```{r}
+
+
+
+```
+
+### Finding 5
+
+#### "About 31 percent, or 77, of the 247 women fatally shot by police since 2015 had mental health issues, compared to 22 percent of the 5,362 men killed."
+
+Obtaining values:
+
+```{r}
+
+
 
 ```
