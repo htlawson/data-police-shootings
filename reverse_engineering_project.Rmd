@@ -73,6 +73,21 @@ fatal_encounters_data <- read_csv("fatal_encounters_data.csv")
 
 ```
 
+To filter the data (known race and date, year after 2014):
+
+```{r}
+
+updated_fatal_encounters <- fatal_encounters_data %>%
+  filter(!is.na(`Race with imputations`) & 
+         !is.na(`Date of injury resulting in death (month/day/year)`)) %>%
+  mutate(date = as.Date(`Date of injury resulting in death (month/day/year)`, format = "%m/%d/%Y")) %>%
+  filter(date >= as.Date("01/01/2015", format = "%m/%d/%Y")) %>%
+  arrange(desc(date))
+
+fatal_shootings_known_race <- subset(shootings_data_2, !is.na(race))
+
+```
+
 ### Finding 1
 
 #### "Since 2015, Black women have accounted for less than 1 percent of the overall fatal shootings in cases where race was known. But within this small subset, Black women, who are 13 percent of the female population, account for 20 percent of the women shot and killed and 28 percent of the unarmed deaths."
@@ -81,8 +96,19 @@ Filtering the data and obtaining values:
 
 ```{r}
 
-# Filtering the data for fatal shootings where race is known
+
+updated_fatal_encounters <- fatal_encounters_data %>%
+  filter(!is.na(`Race with imputations`) & 
+         !is.na(`Date of injury resulting in death (month/day/year)`)) %>%
+  mutate(date = as.Date(`Date of injury resulting in death (month/day/year)`, format = "%m/%d/%Y")) %>%
+  filter(date >= as.Date("01/01/2015", format = "%m/%d/%Y")) %>%
+  arrange(desc(date))
+
 fatal_shootings_known_race <- subset(shootings_data_2, !is.na(race))
+
+```
+
+```{r}
 
 # Number of shootings where race is known
 total_fatal_shootings_known_race <- nrow(fatal_shootings_known_race)
