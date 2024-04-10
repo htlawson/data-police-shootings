@@ -128,6 +128,26 @@ cat("Total fatal shootings in 2020:", number_shootings_2020)
 
 ```
 
+To visualize:
+
+```{r}
+
+shootings_2015_to_2020 <- data.frame(
+  Year = c("2015", "2016", "2017", "2018", "2019", "2020"),
+  Shootings = c(number_shootings_2015, number_shootings_2016, number_shootings_2017, number_shootings_2018, number_shootings_2019, number_shootings_2020)
+)
+
+ggplot(shootings_2015_to_2020, aes(x = Year, y = Shootings, fill = Shootings)) +
+  geom_bar(stat = "identity") +
+  scale_fill_gradient(low = "#B0ABFF", high = "#7386FF", guide = "none") +
+  labs(title = "Fatal Shootings by Year (2015-2020)",
+       x = "Year",
+       y = "Number of Shootings") +
+  theme_minimal()
+
+
+```
+
 ### Finding 2
 
 #### "Since 2015, Black women have accounted for less than 1 percent of the overall fatal shootings in cases where race was known. But within this small subset, Black women, who are 13 percent of the female population, account for 20 percent of the women shot and killed and 28 percent of the unarmed deaths."
@@ -185,6 +205,56 @@ cat("Percentage unarmed Black women shot and killed out of all unarmed deaths:",
 
 ```
 
+To visualize:
+
+```{r}
+
+black_women_deaths <- data.frame(
+  Category = c("Black Women Shot and Killed", "Total Women Shot and Killed"),
+  Count = c(total_black_women_shot_and_killed, total_women_shot_and_killed_known_race),
+  Percentage = c(percentage_black_women_of_all_women, 80)
+)
+
+black_women_deaths$Category <- factor(black_women_deaths$Category, levels = c("Black Women Shot and Killed", "Total Women Shot and Killed"))
+
+ggplot(black_women_deaths, aes(x = "", y = Count, fill = Category)) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar("y", start = 0) +
+  labs(title = "Percentage of Black Women Shot and Killed out of All Female Deaths",
+       fill = "",
+       x = NULL,
+       y = NULL) +
+  scale_fill_manual(values = c("#B0ABFF", "#7386FF")) +
+  theme_void() +
+  theme(legend.position = "bottom") +
+  geom_text(aes(label = paste0(round(Percentage), "%")), position = position_stack(vjust = 0.5))
+
+```
+
+```{r}
+
+unarmed_black_women_deaths <- data.frame(
+  Category = c("Unarmed Black Women Shot and Killed", "Total Unarmed Women Shot and Killed"),
+  Count = c(total_unarmed_black_women_shot_and_killed, total_unarmed_women_shot_and_killed_known_race),
+  Percentage = c(percentage_black_women_unarmed_deaths, 72)
+)
+
+unarmed_black_women_deaths$Category <- factor(unarmed_black_women_deaths$Category, levels = c("Unarmed Black Women Shot and Killed", "Total Unarmed Women Shot and Killed"))
+
+ggplot(unarmed_black_women_deaths, aes(x = "", y = Count, fill = Category)) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar("y", start = 0) +
+  labs(title = "Percentage of Unarmed Black Women Shot and Killed out of All Unarmed Female Deaths",
+       fill = "",
+       x = NULL,
+       y = NULL) +
+  scale_fill_manual(values = c("#B0ABFF", "#7386FF")) +
+  theme_void() +
+  theme(legend.position = "bottom") +
+  geom_text(aes(label = paste0(round(Percentage), "%")), position = position_stack(vjust = 0.5))
+
+```
+
 ### Finding 3
 
 #### "Since 2015, police have killed 26 unarmed women, including Taylor. Of those, 14 were White, seven were Black, four were Hispanic and one’s race was unknown. While about twice as many White women were shot and killed as Black women, White women account for five times the Black female population."
@@ -232,6 +302,33 @@ cat("Total number of unarmed women (race unknown) shot and killed:", total_unarm
 
 ```
 
+To visualize:
+
+```{r}
+
+unarmed_deaths_by_race <- data.frame(
+  Category = c("White", "Black", "Hispanic", "Unknown"),
+  Count = c(total_unarmed_white_women, total_unarmed_black_women, total_unarmed_hispanic_women, total_unarmed_unknown_women)
+)
+
+ggplot(unarmed_deaths_by_race, aes(x = "", y = Count, fill = factor(Category))) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar("y", start = 0) +
+  labs(title = "Number of Unarmed Female Deaths by Race",
+       fill = "Race",
+       x = NULL,
+       y = NULL) +
+  scale_fill_manual(values = c("White" = "#B0ABFF", "Black" = "#8B94FF", "Hispanic" = "#405AFF", "Unknown" = "#0C27D0")) +
+  theme_void() +
+  theme(legend.position = "bottom") +
+  guides(fill = guide_legend(title.position = "top", title.hjust = 0.5)) + 
+  geom_text(aes(label = paste0(Count)), position = position_stack(vjust = 0.5))
+
+
+
+
+```
+
 ### Finding 4
 
 #### "For both genders, a gun was the most common weapon. Of men killed, 57 percent were armed with a gun and of women, 44 percent. In other cases, women were armed with knives, cars, toy weapons, hammers and hatchets."
@@ -269,3 +366,23 @@ cat("Percentage of men shot and killed armed with a gun (known race):", percenta
 cat("Percentage of women shot and killed armed with a gun (known race):", percentage_women_armed_gun, "%")
 
 ```
+
+To visualize:
+
+```{r}
+
+armed_deaths <- data.frame(
+  Gender = c("Men", "Women"),
+  Percentage = c(percentage_men_armed_gun, percentage_women_armed_gun)
+)
+
+ggplot(armed_deaths, aes(x = Gender, y = Percentage, fill = Gender)) +
+  geom_bar(stat = "identity", fill = c("#7386FF", "#B0ABFF"), guide = "none") +
+  labs(title = "Percentage of Men and Women Armed (Gun) Shot and Killed",
+       x = "Gender",
+       y = "Percentage") +
+  theme_minimal()
+
+```
+
+### Conclusion
