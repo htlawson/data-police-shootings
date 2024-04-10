@@ -1,0 +1,271 @@
+---
+title: "reverse_engineering_project"
+output: html_document
+date: "2024-04-02"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Reverse Engineering Project
+
+## Harper Lawson
+
+### Background
+
+I am examining the 2020 Washington Post story, “[Nearly 250 women have been fatally shot by police since 2015](https://www.washingtonpost.com/graphics/2020/investigations/police-shootings-women/)” by Marisa Iati, Jennifer Jenkins and Sommer Brugal.
+
+An interactive database on the subject can be found [here](https://www.washingtonpost.com/graphics/investigations/police-shootings-database/).
+
+This piece uses the murder of Breonna Taylor as a catalyst in diving into the much larger issue of police using excessive force disproportionately and unnecessarily against certain communities and demographics.
+
+### Key Findings/Paragraphs
+
+#### "The Post began tracking fatal police shootings in a database in January 2015, months after a White police officer in Ferguson, Mo., killed Michael Brown, an unarmed Black man during a confrontation. Since then, police have shot and killed about 1,000 people a year."
+
+I highlighted this paragraph because not only does it provide context to why The Washington Post originally began tracking fatal police shootings, but also because a fatal shooting rate of 1,000 people per year is arguably high and worth noting.
+
+#### "Since 2015, Black women have accounted for less than 1 percent of the overall fatal shootings in cases where race was known. But within this small subset, Black women, who are 13 percent of the female population, account for 20 percent of the women shot and killed and 28 percent of the unarmed deaths."
+
+I highlighted this paragraph because it is important to recognize how the percentages of Black women shot, killed, and killed while unarmed are higher than the percentage of the female population for which they account.
+
+#### "Since 2015, police have killed 26 unarmed women, including Taylor. Of those, 14 were White, seven were Black, four were Hispanic and one’s race was unknown. While about twice as many White women were shot and killed as Black women, White women account for five times the Black female population."
+
+I highlighted this paragraph because of the key statistic that the population of White women is five times as much as that of Black women, but only twice as many White women were killed as Black women. This goes to show how the number of deaths of Black women in this case is still disproportionately high. Geoffrey P. Alpert, a criminology professor at the University of South Carolina and co-author of “Evaluating Police Uses of Force” was consulted about this information, likely due to the data analysis.
+
+#### "For both genders, a gun was the most common weapon. Of men killed, 57 percent were armed with a gun and of women, 44 percent. In other cases, women were armed with knives, cars, toy weapons, hammers and hatchets."
+
+I highlighted this paragraph because the percentages of people possessing guns are low compared to how many were shot themselves, which is of course 100%. It is worth exploring the fact that 43% of men and 56% of women fatally shot by police were not even armed with a gun themselves.
+
+### First Steps
+
+To load the necessary packages:
+
+```{r}
+
+library (tidyverse)
+library (rmarkdown)
+library (janitor)
+library (ggplot2)
+library (leaflet)
+library (sf)
+
+# Assuming these packages are already installed.
+# Assuming base, datasets, forcats, graphics, purrr, readr, and stats are already installed and loaded.
+
+```
+
+To load the necessary data:
+
+```{r}
+
+shootings_data_2 <- read_csv("v2/fatal-police-shootings-data.csv")
+
+```
+
+To filter the data (known race and date, beginning in 2015 and ending before the article was published):
+
+```{r}
+
+fatal_shootings_known_race <- subset(shootings_data_2, !is.na(race)) %>%
+  filter(date < "2020-09-04")
+
+fatal_shootings_all_women <- subset(shootings_data_2) %>% # This includes women whose races are unknown.
+  filter(date < "2020-09-04") %>%
+  filter(gender == "female")
+
+```
+
+### Finding 1
+
+#### "The Post began tracking fatal police shootings in a database in January 2015, months after a White police officer in Ferguson, Mo., killed Michael Brown, an unarmed Black man during a confrontation. Since then, police have shot and killed about 1,000 people a year."
+
+```{r}
+
+shootings_2015 <- shootings_data_2 %>%
+  filter(date >= "2015-01-01") %>%
+  filter(date <= "2015-12-31")
+
+number_shootings_2015 <- nrow(shootings_2015)
+  
+shootings_2016 <- shootings_data_2 %>%
+  filter(date >= "2016-01-01") %>%
+  filter(date <= "2016-12-31")
+
+number_shootings_2016 <- nrow(shootings_2016)
+  
+shootings_2017 <- shootings_data_2 %>%
+  filter(date >= "2017-01-01") %>%
+  filter(date <= "2017-12-31")
+
+number_shootings_2017 <- nrow(shootings_2017)
+  
+shootings_2018 <- shootings_data_2 %>%
+  filter(date >= "2018-01-01") %>%
+  filter(date <= "2018-12-31")
+
+number_shootings_2018 <- nrow(shootings_2018)
+
+shootings_2019 <- shootings_data_2 %>%
+  filter(date >= "2019-01-01") %>%
+  filter(date <= "2019-12-31")
+
+number_shootings_2019 <- nrow(shootings_2019)
+
+shootings_2020 <- shootings_data_2 %>%
+  filter(date >= "2020-01-01") %>%
+  filter(date <= "2020-12-31")
+
+number_shootings_2020 <- nrow(shootings_2020)
+
+cat("Total fatal shootings in 2015:", number_shootings_2015, "\n")
+cat("Total fatal shootings in 2016:", number_shootings_2016, "\n")
+cat("Total fatal shootings in 2017:", number_shootings_2017, "\n")
+cat("Total fatal shootings in 2018:", number_shootings_2018, "\n")
+cat("Total fatal shootings in 2019:", number_shootings_2019, "\n")
+cat("Total fatal shootings in 2020:", number_shootings_2020)
+
+```
+
+### Finding 2
+
+#### "Since 2015, Black women have accounted for less than 1 percent of the overall fatal shootings in cases where race was known. But within this small subset, Black women, who are 13 percent of the female population, account for 20 percent of the women shot and killed and 28 percent of the unarmed deaths."
+
+Obtaining values:
+
+```{r}
+
+# Total number of shootings (known race)
+total_fatal_shootings_known_race <- nrow(fatal_shootings_known_race)
+# Answer: 5,253
+
+# Total number of Black women shot and killed (known race)
+total_black_women_shot_and_killed <- nrow(subset(fatal_shootings_known_race, race == "B" & gender == "female"))
+# Answer: 48
+
+# Total number of women shot and killed (known race)
+total_women_shot_and_killed_known_race <- nrow(subset(fatal_shootings_known_race, gender == "female"))
+# Answer: 242
+
+# Total number of all unarmed women shot and killed (known race)
+total_unarmed_women_shot_and_killed_known_race <- nrow(subset(fatal_shootings_known_race, gender == "female" & armed_with == "unarmed"))
+# Answer: 26
+
+# Total number of unarmed Black women shot and killed (known race)
+total_unarmed_black_women_shot_and_killed <- nrow(subset(fatal_shootings_known_race, race == "B" & gender == "female" & armed_with == "unarmed"))
+# Answer: 7
+
+```
+
+"Since 2015, Black women have accounted for less than 1 percent of the overall fatal shootings in cases where race was known."
+
+```{r}
+
+# Percentage of Black women of all shot and killed
+percentage_black_women_of_all <- total_black_women_shot_and_killed / total_fatal_shootings_known_race * 100
+
+cat("Percentage of Black women out of overall fatal shootings in cases where race was known:", percentage_black_women_of_all, "%")
+
+```
+
+"Black women, who are 13 percent of the female population, account for 20 percent of the women shot and killed and 28 percent of the unarmed deaths."
+
+```{r}
+
+# Percentage of Black women out of all women shot and killed
+percentage_black_women_of_all_women <- total_black_women_shot_and_killed / total_women_shot_and_killed_known_race * 100
+
+# Percentage unarmed Black women out of all unarmed deaths
+percentage_black_women_unarmed_deaths <- total_unarmed_black_women_shot_and_killed / total_unarmed_women_shot_and_killed_known_race * 100
+
+cat("Percentage of Black women of all women shot and killed:", percentage_black_women_of_all_women, "%\n")
+
+cat("Percentage unarmed Black women shot and killed out of all unarmed deaths:", percentage_black_women_unarmed_deaths, "%")
+
+```
+
+### Finding 3
+
+#### "Since 2015, police have killed 26 unarmed women, including Taylor. Of those, 14 were White, seven were Black, four were Hispanic and one’s race was unknown. While about twice as many White women were shot and killed as Black women, White women account for five times the Black female population."
+
+Obtaining values:
+
+```{r}
+
+# Total number of all unarmed women shot and killed
+total_unarmed_women_shot_and_killed <- nrow(subset(fatal_shootings_all_women, armed_with == "unarmed"))
+
+# Total number of unarmed white women shot and killed
+total_unarmed_white_women <- nrow(subset(fatal_shootings_all_women, race == "W" & armed_with == "unarmed"))
+
+# Total number of unarmed Black women shot and killed
+total_unarmed_black_women <- nrow(subset(fatal_shootings_all_women, race == "B" & armed_with == "unarmed"))
+
+# Total number of unarmed Hispanic women shot and killed
+total_unarmed_hispanic_women <- nrow(subset(fatal_shootings_all_women, race == "H" & armed_with == "unarmed"))
+
+# Total number of unarmed women (race unknown) shot and killed
+total_unarmed_unknown_women <- nrow(subset(fatal_shootings_all_women, is.na(race) & armed_with == "unarmed"))
+
+```
+
+"Since 2015, police have killed 26 unarmed women, including Taylor."
+
+```{r}
+
+cat("Total number of all unarmed women shot and killed:", total_unarmed_women_shot_and_killed)
+
+```
+
+"Of those, 14 were White, seven were Black, four were Hispanic and one’s race was unknown."
+
+```{r}
+
+cat("Total number of unarmed white women shot and killed:", total_unarmed_white_women, "\n")
+
+cat("Total number of unarmed Black women shot and killed:", total_unarmed_black_women, "\n")
+
+cat("Total number of unarmed hispanic women shot and killed:", total_unarmed_hispanic_women, "\n")
+
+cat("Total number of unarmed women (race unknown) shot and killed:", total_unarmed_unknown_women)
+
+```
+
+### Finding 4
+
+#### "For both genders, a gun was the most common weapon. Of men killed, 57 percent were armed with a gun and of women, 44 percent. In other cases, women were armed with knives, cars, toy weapons, hammers and hatchets."
+
+Obtaining values:
+
+```{r}
+
+# Total number of men shot and killed
+total_men_shot_and_killed <- nrow(subset(fatal_shootings_known_race, gender == "male"))
+# Answer: 9,027
+
+# Total number of men armed with a gun shot and killed
+total_men_armed_gun <- nrow(subset(fatal_shootings_known_race, gender == "male" & armed_with == "gun"))
+# Answer: 5,300
+
+# Total number of women armed with a gun shot and killed
+total_women_armed_gun <- nrow(subset(fatal_shootings_all_women, armed_with == "gun"))
+# Answer: 107
+
+```
+
+"Of men killed, 57 percent were armed with a gun and of women, 44 percent."
+
+```{r}
+
+# Percentage of men shot and killed armed with a gun (known race)
+percentage_men_armed_gun <- total_men_armed_gun / total_men_shot_and_killed * 100
+
+# Percentage of women shot and killed armed with a gun (known race)
+percentage_women_armed_gun <- total_women_armed_gun / total_women_shot_and_killed_known_race * 100
+
+cat("Percentage of men shot and killed armed with a gun (known race):", percentage_men_armed_gun, "%\n")
+
+cat("Percentage of women shot and killed armed with a gun (known race):", percentage_women_armed_gun, "%")
+
+```
