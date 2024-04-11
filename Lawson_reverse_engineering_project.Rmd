@@ -22,21 +22,13 @@ This piece uses the murder of Breonna Taylor as a catalyst in diving into the mu
 
 ### Key Findings/Paragraphs
 
-#### "The Post began tracking fatal police shootings in a database in January 2015, months after a White police officer in Ferguson, Mo., killed Michael Brown, an unarmed Black man during a confrontation. Since then, police have shot and killed about 1,000 people a year."
+#### "The Post began tracking fatal police shootings in a database in January 2015, months after a White police officer in Ferguson, Mo., killed Michael Brown, an unarmed Black man during a confrontation. Since then, police have shot and killed about 1,000 people a year." {#Finding1}
 
-I highlighted this paragraph because not only does it provide context to why The Washington Post originally began tracking fatal police shootings, but also because a fatal shooting rate of 1,000 people per year is arguably high and worth noting.
+#### "Since 2015, Black women have accounted for less than 1 percent of the overall fatal shootings in cases where race was known. But within this small subset, Black women, who are 13 percent of the female population, account for 20 percent of the women shot and killed and 28 percent of the unarmed deaths." {#Finding2}
 
-#### "Since 2015, Black women have accounted for less than 1 percent of the overall fatal shootings in cases where race was known. But within this small subset, Black women, who are 13 percent of the female population, account for 20 percent of the women shot and killed and 28 percent of the unarmed deaths."
+#### "Since 2015, police have killed 26 unarmed women, including Taylor. Of those, 14 were White, seven were Black, four were Hispanic and one’s race was unknown. While about twice as many White women were shot and killed as Black women, White women account for five times the Black female population." {#Finding3}
 
-I highlighted this paragraph because it is important to recognize how the percentages of Black women shot, killed, and killed while unarmed are higher than the percentage of the female population for which they account.
-
-#### "Since 2015, police have killed 26 unarmed women, including Taylor. Of those, 14 were White, seven were Black, four were Hispanic and one’s race was unknown. While about twice as many White women were shot and killed as Black women, White women account for five times the Black female population."
-
-I highlighted this paragraph because of the key statistic that the population of White women is five times as much as that of Black women, but only twice as many White women were killed as Black women. This goes to show how the number of deaths of Black women in this case is still disproportionately high. Geoffrey P. Alpert, a criminology professor at the University of South Carolina and co-author of “Evaluating Police Uses of Force” was consulted about this information, likely due to the data analysis.
-
-#### "For both genders, a gun was the most common weapon. Of men killed, 57 percent were armed with a gun and of women, 44 percent. In other cases, women were armed with knives, cars, toy weapons, hammers and hatchets."
-
-I highlighted this paragraph because the percentages of people possessing guns are low compared to how many were shot themselves, which is of course 100%. It is worth exploring the fact that 43% of men and 56% of women fatally shot by police were not even armed with a gun themselves.
+#### "For both genders, a gun was the most common weapon. Of men killed, 57 percent were armed with a gun and of women, 44 percent. In other cases, women were armed with knives, cars, toy weapons, hammers and hatchets." {#Finding4}
 
 ### First Steps
 
@@ -60,7 +52,12 @@ To load the necessary data:
 
 ```{r}
 
+# Used in my analysis:
 shootings_data_2 <- read_csv("v2/fatal-police-shootings-data.csv")
+
+# Not used in my analysis but useful for context and comparison:
+shootings_agencies <- read_csv("v2/fatal-police-shootings-agencies.csv")
+fatal_encounters_data <- read_csv("fatal_encounters_data.csv")
 
 ```
 
@@ -82,6 +79,8 @@ fatal_shootings_all_women <- subset(shootings_data_2) %>% # This includes women 
 #### "The Post began tracking fatal police shootings in a database in January 2015, months after a White police officer in Ferguson, Mo., killed Michael Brown, an unarmed Black man during a confrontation. Since then, police have shot and killed about 1,000 people a year."
 
 ```{r}
+
+# To create new data sets with shooting data from the specific years, filtering out data before and after:
 
 shootings_2015 <- shootings_data_2 %>%
   filter(date >= "2015-01-01") %>%
@@ -119,6 +118,8 @@ shootings_2020 <- shootings_data_2 %>%
 
 number_shootings_2020 <- nrow(shootings_2020)
 
+# To print the values with titles:
+
 cat("Total fatal shootings in 2015:", number_shootings_2015, "\n")
 cat("Total fatal shootings in 2016:", number_shootings_2016, "\n")
 cat("Total fatal shootings in 2017:", number_shootings_2017, "\n")
@@ -132,10 +133,14 @@ To visualize:
 
 ```{r}
 
+# To create a data frame that will be the basis of the visualization:
+
 shootings_2015_to_2020 <- data.frame(
   Year = c("2015", "2016", "2017", "2018", "2019", "2020"),
   Shootings = c(number_shootings_2015, number_shootings_2016, number_shootings_2017, number_shootings_2018, number_shootings_2019, number_shootings_2020)
 )
+
+# To create and style a bar chart of the data in the data frame:
 
 ggplot(shootings_2015_to_2020, aes(x = Year, y = Shootings, fill = Shootings)) +
   geom_bar(stat = "identity") +
@@ -185,6 +190,8 @@ total_unarmed_black_women_shot_and_killed <- nrow(subset(fatal_shootings_known_r
 # Percentage of Black women of all shot and killed
 percentage_black_women_of_all <- total_black_women_shot_and_killed / total_fatal_shootings_known_race * 100
 
+# To print the value with a title:
+
 cat("Percentage of Black women out of overall fatal shootings in cases where race was known:", percentage_black_women_of_all, "%")
 
 ```
@@ -199,6 +206,8 @@ percentage_black_women_of_all_women <- total_black_women_shot_and_killed / total
 # Percentage unarmed Black women out of all unarmed deaths
 percentage_black_women_unarmed_deaths <- total_unarmed_black_women_shot_and_killed / total_unarmed_women_shot_and_killed_known_race * 100
 
+# To print the values with titles:
+
 cat("Percentage of Black women of all women shot and killed:", percentage_black_women_of_all_women, "%\n")
 
 cat("Percentage unarmed Black women shot and killed out of all unarmed deaths:", percentage_black_women_unarmed_deaths, "%")
@@ -209,6 +218,8 @@ To visualize:
 
 ```{r}
 
+# To create a data frame that will be the basis of the visualization:
+
 black_women_deaths <- data.frame(
   Category = c("Black Women Shot and Killed", "Total Women Shot and Killed"),
   Count = c(total_black_women_shot_and_killed, total_women_shot_and_killed_known_race),
@@ -216,6 +227,8 @@ black_women_deaths <- data.frame(
 )
 
 black_women_deaths$Category <- factor(black_women_deaths$Category, levels = c("Black Women Shot and Killed", "Total Women Shot and Killed"))
+
+# To create and style a pie chart of the data in the data frame:
 
 ggplot(black_women_deaths, aes(x = "", y = Count, fill = Category)) +
   geom_bar(stat = "identity", width = 1) +
@@ -229,9 +242,7 @@ ggplot(black_women_deaths, aes(x = "", y = Count, fill = Category)) +
   theme(legend.position = "bottom") +
   geom_text(aes(label = paste0(round(Percentage), "%")), position = position_stack(vjust = 0.5))
 
-```
-
-```{r}
+# To create a data frame that will be the basis of the visualization:
 
 unarmed_black_women_deaths <- data.frame(
   Category = c("Unarmed Black Women Shot and Killed", "Total Unarmed Women Shot and Killed"),
@@ -240,6 +251,8 @@ unarmed_black_women_deaths <- data.frame(
 )
 
 unarmed_black_women_deaths$Category <- factor(unarmed_black_women_deaths$Category, levels = c("Unarmed Black Women Shot and Killed", "Total Unarmed Women Shot and Killed"))
+
+# To create and style a pie chart of the data in the data frame:
 
 ggplot(unarmed_black_women_deaths, aes(x = "", y = Count, fill = Category)) +
   geom_bar(stat = "identity", width = 1) +
@@ -284,6 +297,8 @@ total_unarmed_unknown_women <- nrow(subset(fatal_shootings_all_women, is.na(race
 
 ```{r}
 
+# To print the value with a title:
+
 cat("Total number of all unarmed women shot and killed:", total_unarmed_women_shot_and_killed)
 
 ```
@@ -291,6 +306,8 @@ cat("Total number of all unarmed women shot and killed:", total_unarmed_women_sh
 "Of those, 14 were White, seven were Black, four were Hispanic and one’s race was unknown."
 
 ```{r}
+
+# To print the values with titles:
 
 cat("Total number of unarmed white women shot and killed:", total_unarmed_white_women, "\n")
 
@@ -306,10 +323,14 @@ To visualize:
 
 ```{r}
 
+# To create a data frame that will be the basis of the visualization:
+
 unarmed_deaths_by_race <- data.frame(
   Category = c("White", "Black", "Hispanic", "Unknown"),
   Count = c(total_unarmed_white_women, total_unarmed_black_women, total_unarmed_hispanic_women, total_unarmed_unknown_women)
 )
+
+# To create and style a pie chart of the data in the data frame:
 
 ggplot(unarmed_deaths_by_race, aes(x = "", y = Count, fill = factor(Category))) +
   geom_bar(stat = "identity", width = 1) +
@@ -361,6 +382,8 @@ percentage_men_armed_gun <- total_men_armed_gun / total_men_shot_and_killed * 10
 # Percentage of women shot and killed armed with a gun (known race)
 percentage_women_armed_gun <- total_women_armed_gun / total_women_shot_and_killed_known_race * 100
 
+# To print the values with titles:
+
 cat("Percentage of men shot and killed armed with a gun (known race):", percentage_men_armed_gun, "%\n")
 
 cat("Percentage of women shot and killed armed with a gun (known race):", percentage_women_armed_gun, "%")
@@ -371,10 +394,14 @@ To visualize:
 
 ```{r}
 
+# To create a data frame that will be the basis of the visualization:
+
 armed_deaths <- data.frame(
   Gender = c("Men", "Women"),
   Percentage = c(percentage_men_armed_gun, percentage_women_armed_gun)
 )
+
+# To create and style a bar chart of the data in the data frame:
 
 ggplot(armed_deaths, aes(x = Gender, y = Percentage, fill = Gender)) +
   geom_bar(stat = "identity", fill = c("#7386FF", "#B0ABFF"), guide = "none") +
@@ -385,4 +412,32 @@ ggplot(armed_deaths, aes(x = Gender, y = Percentage, fill = Gender)) +
 
 ```
 
-### Conclusion
+### Memo
+
+The main findings of the Washington Post article, "[Nearly 250 women have been fatally shot by police since 2015](https://www.washingtonpost.com/graphics/2020/investigations/police-shootings-women/)” by Marisa Iati, Jennifer Jenkins and Sommer Brugal that I analyzed in this notebook were all key in pointing out not only how frequent fatal police shootings are, but how they form and perpetuate discrepancies between different demographics and disproportionately affect marginalized communities.
+
+I highlighted the [first finding](#Finding1) listed because not only does it provide context to why The Washington Post originally began tracking fatal police shootings, but also because a fatal shooting rate of 1,000 people per year is arguably high and worth noting.
+
+I highlighted the [second finding](#Finding2) listed because it is important to recognize how the percentages of Black women shot, killed, and killed while unarmed are higher than the percentage of the female population for which they account.
+
+I highlighted the [third finding](#Finding3) listed because of the key statistic that the population of White women is five times as much as that of Black women, but only twice as many White women were killed as Black women. This goes to show how the number of deaths of Black women in this case is still disproportionately high.
+
+I highlighted the [fourth finding](#Finding4) listed because the percentages of people possessing guns are low compared to how many were shot themselves, which is of course 100%. It is worth exploring the fact that 43% of men and 56% of women fatally shot by police were not even armed with a gun themselves.
+
+Other findings mentioned in the story highlighted this idea, as well as real-life examples and testimonies from those who knew the victims. Including accounts from friends and family of the victims brought the story to life, humanizing the presented statistics.
+
+The reporters used data not only to highlight key figures but also to put them into context through comparisons. This approach is effective in making a data-heavy story comprehensible to a wide audience with varying knowledge on how to interpret data.
+
+The reporters communicated their findings by straightforwardly writing out the data, then following it with detailed context including the testimonies as well as general news coverage of the shooting(s) in question. The only thing I feel could be improved is possibly finding a way to make the stated data findings themselves more intriguing, but overall I liked their approaches in the story overall.
+
+While the reporters and contributers did not specifically cite any flaws or shortcomings, they were very on top of using phrasing that implied the data was up to further interpretation. Using phrases such as "The Post found..." as opposed to stating the information as fact was a great way to avoid a correction while still acknowledging the effort of the reporters.
+
+It is also extremely simply for readers to find and view the data the reporters used and analyzed and their methodology. The data is repeatedly hyper-linked when mentioned in the piece, and at the very bottom of the web page is a very useful and transparent "About this story" note:
+
+"Shootings data are from the [Washington Post’s police shootings database](https://www.washingtonpost.com/graphics/investigations/police-shootings-database/), which contains records of every fatal shooting in the United States by an on-duty officer since Jan. 1, 2015. Population data are five-year estimates from the 2018 American Community Survey by the [U.S. Census Bureau](https://data.census.gov/cedsci/). Victims whose race is not specified are not included in the graphic displaying rates by race. The Post identifies victims by the gender they identify with if reports indicate that it differs from their biological sex. [Read our full methodology and download the data](https://github.com/washingtonpost/data-police-shootings)."
+
+From there, the data can be downloaded and cloned as a repository in Github.
+
+The Post used data from the U.S. Census and the Fatal Encounters database, then compiled their own data set with all relevant information. Also, although they created and switch over to an updated, improved data set, they still included the original version in the downloadable package for transparency.
+
+From my own analysis, it seems the Post did have a great deal of filtering and "cleaning" to do to compile their data set. It appears to be much more concise and organized than the other documents it stemmed from.
