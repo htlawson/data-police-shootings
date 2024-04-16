@@ -430,7 +430,7 @@ The reporters used data not only to highlight key figures but also to put them i
 
 The reporters communicated their findings by straightforwardly writing out the data, then following it with detailed context including the testimonies as well as general news coverage of the shooting(s) in question. The only thing I feel could be improved is possibly finding a way to make the stated data findings themselves more intriguing, but overall I liked their approaches in the story overall.
 
-While the reporters and contributers did not specifically cite any flaws or shortcomings, they were very on top of using phrasing that implied the data was up to further interpretation. Using phrases such as "The Post found..." as opposed to stating the information as fact was a great way to avoid a correction while still acknowledging the effort of the reporters.
+While the reporters and contributors did not specifically cite any flaws or shortcomings, they were very on top of using phrasing that implied the data was up to further interpretation. Using phrases such as "The Post found..." as opposed to stating the information as fact was a great way to avoid a correction while still acknowledging the effort of the reporters.
 
 It is also extremely simply for readers to find and view the data the reporters used and analyzed and their methodology. The data is repeatedly hyper-linked when mentioned in the piece, and at the very bottom of the web page is a very useful and transparent "About this story" note:
 
